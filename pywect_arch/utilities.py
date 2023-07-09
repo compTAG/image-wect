@@ -5,7 +5,7 @@ import dionysus as d
 from dionysus import Simplex
 
 def print_filtration(filtration):
-    for simplex in filtration.__iter__():
+    for simplex in filtration:
         try:
             print(simplex, simplex.weight)
         except:
@@ -99,7 +99,7 @@ def get_weighted_filtration(filtration, weight_arr, weight_function, zero_flag=T
 
     """
     weighted_filtration = []
-    for simplex in filtration.__iter__():
+    for simplex in filtration:
         verts,weight = get_simplex_weight(weight_arr, simplex, weight_function, zero_flag)
         weighted_simplex = WeightedSimplex(verts, simplex.data, weight)
         weighted_filtration.append(weighted_simplex)

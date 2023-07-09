@@ -1,6 +1,6 @@
 import numpy as np
 
-from .utilities import projection_function, get_weighted_filtration
+from .utilities import projection_function, get_weighted_filtration, print_filtration
 
 def get_multidirectional_wects(image_arr, num_steps=50, num_directions=8, threshold_vals=None, weight_function="MAX", ec_only=False):
     """
