@@ -89,7 +89,7 @@ class Image:
         if not axes:
             plt.axis("off")
         if savePath is not None:
-            plt.savefig(f"square_annulus.pdf", format="pdf", bbox_inches="tight")
+            plt.savefig(f"{savePath}.pdf", format="pdf", bbox_inches="tight")
         plt.show()
 
     def get_wect(self, hf):
@@ -126,13 +126,13 @@ def make_circle(grid_size = 65, center = (32, 32), radius = 20):
     mask = __make_mask(pts, grid_size)
     return Shape(grid_size, mask)
 
-def make_favorite_tetris(distribution = "uniform"):
+def make_favorite_tetris():
     pts_ls = np.load("imagewect/favorite_tetris.npy").tolist()
     pts = [tuple(point) for point in pts_ls]
     mask = __make_mask(pts, 65)
     return Shape(65, mask)
 
-def make_annulus(grid_size = 65, center = (32, 32), outer_radius = 22, inner_radius = 10, mu=None, sigma=None):
+def make_annulus(grid_size = 65, center = (32, 32), outer_radius = 22, inner_radius = 10):
     assert(outer_radius > inner_radius)
     pts = [(x,y) for x,y in itertools.product(range(grid_size),range(grid_size)) if (((x-center[0])**2 + (y-center[1])**2 >= inner_radius**2) and ((x-center[0])**2 + (y-center[1])**2 <= outer_radius**2) )]
     mask = __make_mask(pts, grid_size)

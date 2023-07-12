@@ -27,7 +27,6 @@ def compute_wect(img_matrix, filtration, fe="MAX", verbose=False):
 def __contains_zero_weights(s, weights):
     for i in range(0,s.dimension()+1):
         if weights[s[i]] == 0:
-            # print(s, "had a zero weight")
             return True
     return False
 
@@ -38,10 +37,9 @@ def __get_maxfe_weight(s, weights):
     d = s.dimension()
     if d == 0:
         return weights[s[0]]
-    elif d == 1:
+    if d == 1:
         return max([weights[s[0]], weights[s[1]]])
-    else:
-        return max([weights[s[0]], weights[s[1]], weights[s[2]]])
+    return max([weights[s[0]], weights[s[1]], weights[s[2]]])
     
 def __get_simplex_weight(s, weights, fe):
     if fe == "MAX":
