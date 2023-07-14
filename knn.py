@@ -46,31 +46,31 @@ def train_test_split(shape1, shape2, independent=False):
         y_train.append(0)
     for i in test_inds1:
         try:
-            X_train.append(shape1[f"{i}"])
+            X_test.append(shape1[f"{i}"])
         except KeyError:
-            X_train.append(shape1[i])
+            X_test.append(shape1[i])
         y_test.append(0)
     for i in train_inds2:
         try:
-            X_train.append(shape1[f"{i}"])
+            X_train.append(shape2[f"{i}"])
         except KeyError:
-            X_train.append(shape1[i])
+            X_train.append(shape2[i])
         y_train.append(1)
     for i in test_inds2:
         try:
-            X_train.append(shape1[f"{i}"])
+            X_test.append(shape2[f"{i}"])
         except KeyError:
-            X_train.append(shape1[i])
+            X_test.append(shape2[i])
         y_test.append(1)
-    
-
     
     return X_train, np.array(y_train), X_test, np.array(y_test)
 
 def main():
 
-    shapes = ["annulus", "circle", "clusters", "square_annulus", "swiss_cheese", "tetris"]#, "square"]
-    distributions = ["uniform", "n17", "n25", "n50"]
+    # shapes = ["annulus", "circle", "clusters", "square_annulus", "swiss_cheese", "tetris", "square"]
+    shapes = ["swiss_cheese"]
+    # distributions = ["uniform", "n17", "n25", "n50"]
+    distributions = ["uniform"]
     dirs = "8dir"
 
     for shape in shapes:
@@ -92,10 +92,10 @@ def main():
                 model = KNN(X_train, y_train, k=5)
                 preds = model.predict(X_test)
                 accuracies[i] = accuracy_score(y_test, preds)
-                print(f"finished trial {i+1}/100")
+                print(f"finished trial {i+1}/100, accuracy", accuracies[i])
             
             print(f"{shape} {dist} vs. {shape} uniform 8dir max")
-            with open("data/results_svm/vs_uniform.csv", "a") as outfile:
+            with open("data/results_knn/vs_own_uniform.txt", "a") as outfile:
                 outfile.write(f"{shape},max,{dist},{np.mean(accuracies)},{np.std(accuracies)}\n")
 
 
