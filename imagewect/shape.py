@@ -85,6 +85,22 @@ class Shape:
         
         return height_filtration
 
+
+def make_shape_from_image(img):
+    """
+        Creates a shape object from a grid image.
+
+        Args:
+            img (np.ndarray): The image matrix
+
+        Returns:
+            Shape: The shape underlying the image
+        """
+    mask = np.zeros((img.shape[0], img.shape[0]))
+    mask[img != 0] = 1
+    return Shape(mask.shape[0], mask)
+
+
 class UniformDistribution:
     """
     Represents a uniform distribution of pixel intesnities over a grid.
