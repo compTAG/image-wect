@@ -68,7 +68,7 @@ for i, direction in enumerate(directions):
     vectorized_wect = vectorize_wect(wect, height_vals)
     vectorized_wects[i] = vectorized_wect
 
-# let's make a plot
+# let's make a plot of the WECF in each direction
 fig, ax = plt.subplots()
 for i, dw in enumerate(vectorized_wects):
     ax.plot(height_vals, dw, label=f"{i+1}")
