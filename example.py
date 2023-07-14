@@ -1,7 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from imagewect.shape import Image, UniformDistribution, make_square, make_circle
+from imagewect.shape import Shape, Image, UniformDistribution, make_square, make_circle
+from imagewect.wect import compute_wect, vectorize_wect
 
 ####################################################################
 ### Compute WECT on example shapes and images in one direction
@@ -21,9 +22,9 @@ square_height_filtration = square.get_height_filtration(direction)
 
 # compute the wect...
 square_wect = square_img.get_wect(square_height_filtration)
-# ...or discretized wect
+# ...or vectorized wect
 discretization_vals = np.linspace(-45, 45, num=91)
-square_discretized_wect = square_img.get_discretized_wect(square_height_filtration, discretization_vals)
+square_vectorized_wect = square_img.get_vectorized_wect(square_height_filtration, discretization_vals)
 
 # and do the same for another shape...
 circle = make_circle(65)
@@ -36,12 +37,10 @@ from imagewect.wect import distance_between_wects_unidirectional
 distance = distance_between_wects_unidirectional(square_wect, circle_wect, -32, 32)
 print("Distance between Uniform Square and Uniform Circle WECTs:", distance)
 
+
 ####################################################################
 ### Compute WECT on our own image
 ####################################################################
-
-from imagewect.shape import Shape
-from imagewect.wect import compute_wect, discretize_wect
 
 # example image
 img = np.array([[0.75, 0.25, 0], [0.25, 0.75, 0], [0.25, 0.75, 0]])
@@ -59,19 +58,19 @@ sample_theta = np.expand_dims(np.linspace(0, 2*np.pi, num=num_dirs+1), axis=1)[:
 directions = np.concatenate((np.cos(sample_theta), np.sin(sample_theta)), axis=1)
 
 height_vals = np.linspace(-2, 2, num=5)
-discretized_wects = np.zeros((num_dirs, len(height_vals)))
+vectorized_wects = np.zeros((num_dirs, len(height_vals)))
 for i, direction in enumerate(directions):
     # compute the height filtration
     height_filtration = shape.get_height_filtration(direction)
 
     # compute the wect
     wect = compute_wect(img, height_filtration)
-    discretized_wect = discretize_wect(wect, height_vals)
-    discretized_wects[i] = discretized_wect
+    vectorized_wect = vectorize_wect(wect, height_vals)
+    vectorized_wects[i] = vectorized_wect
 
 # let's make a plot
 fig, ax = plt.subplots()
-for i, dw in enumerate(discretized_wects):
+for i, dw in enumerate(vectorized_wects):
     ax.plot(height_vals, dw, label=f"{i+1}")
 ax.legend(title="Directions")
 plt.show()

@@ -1,6 +1,18 @@
 import numpy as np
 
 def compute_wect(img_matrix, filtration, fe="MAX", verbose=False):
+    """
+    Computes the weighted Euler characteristic transform (WECT) of an image.
+
+    Args:
+        img_matrix (np.ndarray): The image matrix.
+        filtration (list): The height filtration to use for computing the WECT.
+        fe (str, optional): The function extension to use for computing weights. Defaults to "MAX".
+        verbose (bool, optional): Whether to print verbose output. Defaults to False.
+
+    Returns:
+        list: The computed WECT.
+    """
     weights = np.concatenate(img_matrix)
     wect = []
     for s in filtration:
@@ -25,12 +37,32 @@ def compute_wect(img_matrix, filtration, fe="MAX", verbose=False):
     return wect
 
 def __contains_zero_weights(s, weights):
+    """
+    Checks if a simplex contains any zero-weighted vertices.
+
+    Args:
+        s (dionysus.Simplex): The simplex.
+        weights (np.ndarray): The weights array.
+
+    Returns:
+        bool: True if the simplex contains zero-weighted vertices, False otherwise.
+    """
     for i in range(0,s.dimension()+1):
         if weights[s[i]] == 0:
             return True
     return False
 
 def __get_maxfe_weight(s, weights):
+    """
+    Computes the weight of a simplex using the MAX function extension.
+
+    Args:
+        s (dionysus.Simplex): The simplex.
+        weights (np.ndarray): The weights array.
+
+    Returns:
+        float: The weight of the simplex.
+    """
     if __contains_zero_weights(s, weights):
         return 0
 
@@ -42,6 +74,17 @@ def __get_maxfe_weight(s, weights):
     return max([weights[s[0]], weights[s[1]], weights[s[2]]])
     
 def __get_simplex_weight(s, weights, fe):
+    """
+    Computes the weight of a simplex based on the function extension specified.
+
+    Args:
+        s (dionysus.Simplex): The simplex.
+        weights (np.ndarray): The weights array.
+        fe (str): The function extension to use for computing weights.
+
+    Returns:
+        float: The weight of the simplex.
+    """
     if fe == "MAX":
         return __get_maxfe_weight(s, weights)
     elif fe == "MIN":
@@ -55,6 +98,16 @@ def __get_simplex_weight(s, weights, fe):
     
 
 def __get_minfe_weight(s, weights):
+    """
+    Computes the weight of a simplex using the MIN function extension.
+
+    Args:
+        s (dionysus.Simplex): The simplex.
+        weights (np.ndarray): The weights array.
+
+    Returns:
+        float: The weight of the simplex.
+    """
     if __contains_zero_weights(s, weights):
         return 0
     
@@ -68,6 +121,16 @@ def __get_minfe_weight(s, weights):
 
 
 def __get_avgfe_weight(s, weights):
+    """
+    Computes the weight of a simplex using the AVG function extension.
+
+    Args:
+        s (dionysus.Simplex): The simplex.
+        weights (np.ndarray): The weights array.
+
+    Returns:
+        float: The weight of the simplex.
+    """
     if __contains_zero_weights(s, weights):
         return 0
     
@@ -80,7 +143,17 @@ def __get_avgfe_weight(s, weights):
         return sum([weights[s[0]], weights[s[1]], weights[s[2]]]) / 3
     
 
-def discretize_wect(wect, height_vals):
+def vectorize_wect(wect, height_vals):
+    """
+    Vectorizes the WECT by computing its values at specified height values.
+
+    Args:
+        wect (list): The WECT.
+        height_vals (list): The height values at which to compute the WECT.
+
+    Returns:
+        np.ndarray: The vectorized WECT.
+    """
     ind = 0
     chi_vals = []
     running_chi = 0
@@ -94,6 +167,18 @@ def discretize_wect(wect, height_vals):
 
 
 def distance_between_wects_multidirectional(wects1, wects2, a, b):
+    """
+    Computes the distance between two sets of nonvectorized multidirectional WECTs.
+
+    Args:
+        wects1 (list): The first set of WECTs.
+        wects2 (list): The second set of WECTs.
+        a (float): The starting height value.
+        b (float): The ending height value.
+
+    Returns:
+        float: The multidirectional distance between the two sets of WECTs.
+    """
     assert(len(wects1) == len(wects2))
     diffs = []
     for d in range(0, len(wects1)):
@@ -103,6 +188,18 @@ def distance_between_wects_multidirectional(wects1, wects2, a, b):
 
 
 def distance_between_wects_unidirectional(wect1, wect2, a, b):
+    """
+    Computes the distance between two nonvectorized unidirectional WECTs (WECF).
+
+    Args:
+        wect1 (list): The first WECT.
+        wect2 (list): The second WECT.
+        a (float): The starting height value.
+        b (float): The ending height value.
+
+    Returns:
+        float: The unidirectional distance between the two WECTs.
+    """
     x = a
     curr_wect1, curr_wect2 = 0, 0
     diff = 0
