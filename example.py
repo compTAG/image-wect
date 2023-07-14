@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from imagewect.shape import Shape, Image, UniformDistribution, make_square, make_circle
+from imagewect.shape import Image, UniformDistribution, make_square, make_circle, make_shape_from_image
 from imagewect.wect import compute_wect, vectorize_wect
 
 ####################################################################
@@ -48,9 +48,7 @@ plt.imshow(img)
 plt.show()
 
 # create the shape
-mask = np.zeros(img.shape)
-mask[img != 0] = 1
-shape = Shape(mask.shape[0], mask)
+shape = make_shape_from_image(img)
 
 # this time we will compute the wect from 8 directions from the circle
 num_dirs = 8
