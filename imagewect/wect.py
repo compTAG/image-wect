@@ -22,17 +22,17 @@ def compute_wect(img_matrix, filtration, fe="MAX", verbose=False):
         if len(wect) == 0:
             wect.append([height, weight])
             if verbose:
-                print("new change point\ns =",s , "curr =", weight)
+                print(f"new change point, height = {height}\n", s, "curr =", weight)
             continue
 
         if height == wect[-1][0]:
             wect[-1][1] += (-1)**(s.dimension())*weight
             if verbose:
-                print("s =", s, "weight +=", (-1)**(s.dimension())*weight, "now", wect[-1][1])
+                print(s, "weight +=", (-1)**(s.dimension())*weight, "now", wect[-1][1])
         else:
             wect.append([height, wect[-1][1]+weight])
             if verbose:
-                print("new change point\ns =",s , "curr =", weight)
+                print(f"new change point, height = {height}\n", s, "curr =", weight)
     
     return wect
 
