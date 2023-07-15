@@ -1,4 +1,5 @@
 import itertools
+import random
 
 import numpy as np
 import dionysus as d
@@ -133,7 +134,12 @@ class UniformDistribution:
         Returns:
             np.ndarray: The channel with values drawn from the uniform distribution.
         """
-        return np.random.uniform(self.a, self.b, (self.grid_size, self.grid_size))
+        channel = np.zeros((self.grid_size, self.grid_size))
+        for i in range(0, channel.shape[0]):
+            for j in range(0, channel.shape[1]):
+                rn = random.uniform(0,1) 
+                channel[i][j] = rn + (1 - rn) * 1e-10 
+        return channel
 
 class NormalDistribution:
     """
